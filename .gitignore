@@ -4,3 +4,9 @@ CMakeCache.txt
 Makefile
 *.swp
 bin
+googletest-build
+googletest-download
+googletest-src
+lib
+Testing
+CTestTestfile.cmake

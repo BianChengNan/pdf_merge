@@ -1,5 +1,4 @@
-#ifndef ARG_PARSER_H
-#define ARG_PARSER_H
+#pragma once
 
 #include <cstring>
 #include <exception>
@@ -31,6 +30,3 @@ class ArgParser{
     const std::vector<std::string> & get_arguments();
     const std::string & get_option(const std::string & option_name);
 };
-
-
-#endif

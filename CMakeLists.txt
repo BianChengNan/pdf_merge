@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.14.3)
 
 project(pdf_merge)
 
+#----------------------
+#   GoogleTest
+#----------------------
 # Download and unpack googletest at configure time
-configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+configure_file(googletest.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
   RESULT_VARIABLE result
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
@@ -28,11 +31,29 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
                  EXCLUDE_FROM_ALL)
 
 
+
+configure_file(pdfwriter.in pdf_writer-download/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} .
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pdf_writer-download )
+if(result)
+  message(FATAL_ERROR "CMake step for PDFWriter failed: ${result}")
+endif()
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pdf_writer-download )
+if(result)
+  message(FATAL_ERROR "Build step for PDFWriter failed: ${result}")
+endif()
+add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/pdf_writer-src)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/pdf_writer-src EXCLUDE_FROM_ALL)
+
+
 include_directories(${PROJECT_SOURCE_DIR}/pdf_merge/include/)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-
 add_executable(app ${PROJECT_SOURCE_DIR}/pdf_merge/src/main.cpp)
+target_link_libraries(app PDFWriter)
 target_sources(app
   PUBLIC
     ${PROJECT_SOURCE_DIR}/pdf_merge/src/arg_parser.cpp

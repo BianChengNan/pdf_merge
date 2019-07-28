@@ -2,8 +2,7 @@
 
 PDFGenerator::PDFGenerator() :
   reader(),
-  writer(),
-  target_file() {
+  writer(){
 };
 
 bool PDFGenerator::file_exists(std::string & path){
@@ -13,7 +12,18 @@ bool PDFGenerator::file_exists(std::string & path){
   } else return false;
 }
 
-void PDFGenerator::generate(){}
+void PDFGenerator::generate(const std::string & target_file){
+  if (writer.StartPDF(target_file.c_str(), ePDFVersion13) != EStatusCode::eSuccess)
+    throw FailedToOpenPDFFile();
+
+  for (std::string * file : files){
+    if (writer.AppendPDFPagesFromPDF(file->c_str(), PDFPageRange()).first != eSuccess)
+      throw FailedToOpenPDFFile();
+  }
+
+  if (writer.EndPDF() != EStatusCode::eSuccess)
+    throw FailedToClosePDFFile();
+}
 
 void PDFGenerator::add_file(std::string & path, int position){
   if (!file_exists(path)) throw FileDoesNotExist();

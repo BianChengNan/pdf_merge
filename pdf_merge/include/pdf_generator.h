@@ -8,11 +8,12 @@
 #include "PDFWriter/PDFWriter.h"
 
 class FileDoesNotExist : public std::exception {};
+class FailedToOpenPDFFile : public std::exception {};
+class FailedToClosePDFFile : public std::exception {};
 
 class PDFGenerator{
   private:
     std::vector<std::string*> files;
-    std::string * target_file;
     PDFParser reader;
     PDFWriter writer;
 
@@ -22,7 +23,7 @@ class PDFGenerator{
 
     PDFGenerator();
 
-    void generate();
+    void generate(const std::string & target_file);
     void add_file(std::string & path, int position=ADD_TO_END);
     const std::vector<std::string*> & get_files();
 };

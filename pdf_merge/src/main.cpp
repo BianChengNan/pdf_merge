@@ -4,6 +4,7 @@
 #include <exception>
 #include <memory>
 #include "arg_parser.h"
+#include "pdf_generator.h"
 
 std::shared_ptr<ArgParser> parse_args(const int, const char **);
 void ensure_minimum_arguments(const std::shared_ptr<ArgParser>);
@@ -16,6 +17,13 @@ int main(int argc, const char ** argv) {
   } catch (const int&) {
     return -1;
   }
+
+  PDFGenerator generator;
+  for (const std::string & file: parser->get_arguments()) {
+    generator.add_file(const_cast<std::string&>(file));
+  }
+
+  generator.generate(parser->get_option("output"));
 
   return 0;
 }

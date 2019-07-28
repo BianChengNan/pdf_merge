@@ -1,21 +1,28 @@
 #pragma once
 
-#include <cstring>
 #include <exception>
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <vector>
+#include <memory>
+#include "PDFWriter/PDFParser.h"
+#include "PDFWriter/PDFWriter.h"
 
-struct Option {
-  std::string name;
-  std::string value;
-};
-
+class FileDoesNotExist : public std::exception {};
 
 class PDFGenerator{
   private:
-    std::vector<std::string> files;
+    std::vector<std::string*> files;
+    std::string * target_file;
+    PDFParser reader;
+    PDFWriter writer;
+
+    virtual bool file_exists(std::string & path);
   public:
-    void generate(const std::string & target_file);
+    static const int ADD_TO_END = -1;
+
+    PDFGenerator();
+
+    void generate();
+    void add_file(std::string & path, int position=ADD_TO_END);
+    const std::vector<std::string*> & get_files();
 };

@@ -13,9 +13,7 @@ struct Option {
 };
 
 
-class NoSuchOption: public std::exception {
-
-};
+class NoSuchOption: public std::exception {};
 
 
 class ArgParser{

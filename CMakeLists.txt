@@ -57,6 +57,7 @@ target_link_libraries(app PDFWriter)
 target_sources(app
   PUBLIC
     ${PROJECT_SOURCE_DIR}/pdf_merge/src/arg_parser.cpp
+    ${PROJECT_SOURCE_DIR}/pdf_merge/src/pdf_generator.cpp
 )
 
 enable_testing()
@@ -64,8 +65,11 @@ add_executable(app_test ${PROJECT_SOURCE_DIR}/pdf_merge/tests/main.cpp)
 target_sources(app_test
   PUBLIC
     ${PROJECT_SOURCE_DIR}/pdf_merge/src/arg_parser.cpp
-    
+    ${PROJECT_SOURCE_DIR}/pdf_merge/src/pdf_generator.cpp
     ${PROJECT_SOURCE_DIR}/pdf_merge/tests/test_arg_parser.cpp
+    ${PROJECT_SOURCE_DIR}/pdf_merge/tests/test_pdf_generator.cpp
 )
 target_link_libraries(app_test gtest_main)
+target_link_libraries(app_test gmock_main)
+target_link_libraries(app_test PDFWriter)
 add_test(NAME app_test COMMAND app_test)

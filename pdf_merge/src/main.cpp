@@ -44,8 +44,10 @@ std::shared_ptr<ArgParser> parse_args(const int argc, const wchar_t ** argv) {
 }
 
 void ensure_minimum_arguments(const std::shared_ptr<ArgParser> parser){
-  if (parser->get_arguments().size() < 2) {
-    std::cout << "You must provide paths to at least 2 pdf files to merge together" << std::endl;
+  // allow only one pdf file, this can be treated as rename operation
+  if (parser->get_arguments().size() < 1) 
+  {
+    std::cout << "You must provide paths to at least one pdf files to merge together" << std::endl;
     throw -1;
   }
 }

@@ -1,8 +1,8 @@
 #include "arg_parser.h"
 
-ArgParser::ArgParser(const int argc, const char ** argv){
+ArgParser::ArgParser(const int argc, const wchar_t ** argv){
   for (int i = 0; i < argc; i++){
-    std::string current_argument = argv[i];
+    std::wstring current_argument = argv[i];
 
     if (argument_is_option(current_argument)){
       options.push_back(
@@ -13,18 +13,18 @@ ArgParser::ArgParser(const int argc, const char ** argv){
   }
 }
 
-bool ArgParser::argument_is_option(const std::string & arg){
-  return arg[0] == '-';
+bool ArgParser::argument_is_option(const std::wstring & arg){
+  return arg[0] == L'-';
 }
 
 Option ArgParser::parse_option(
-    const std::string & option_string){
+    const std::wstring & option_string){
   Option option;
 
-  std::stringstream stream(option_string);
-  std::vector<std::string> parts;
-  std::string segment;
-  while (std::getline(stream, segment, '=')){
+  std::wstringstream stream(option_string);
+  std::vector<std::wstring> parts;
+  std::wstring segment;
+  while (std::getline(stream, segment, L'=')){
     parts.push_back(segment);
   }
   option.name = parts[0].erase(0,1); // delete the dash;
@@ -37,11 +37,11 @@ const std::vector<Option> & ArgParser::get_options(){
   return options;
 }
 
-const std::vector<std::string> & ArgParser::get_arguments(){
+const std::vector<std::wstring> & ArgParser::get_arguments(){
   return arguments;
 }
 
-const std::string & ArgParser::get_option(const std::string &  option_name){
+const std::wstring & ArgParser::get_option(const std::wstring &  option_name){
   for (Option & o : options)
     if (!o.name.compare(option_name)) return o.value;
   throw NoSuchOption();

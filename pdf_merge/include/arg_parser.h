@@ -8,8 +8,8 @@
 #include <vector>
 
 struct Option {
-  std::string name;
-  std::string value;
+  std::wstring name;
+  std::wstring value;
 };
 
 
@@ -18,13 +18,13 @@ class NoSuchOption: public std::exception {};
 
 class ArgParser{
   private:
-    std::vector<std::string> arguments;
+    std::vector<std::wstring> arguments;
     std::vector<Option> options;
-    bool argument_is_option(const std::string & arg);
-    Option parse_option(const std::string & option_string);
+    bool argument_is_option(const std::wstring & arg);
+    Option parse_option(const std::wstring & option_string);
   public:
-    ArgParser(const int argc, const char ** argv);
+    ArgParser(const int argc, const wchar_t ** argv);
     const std::vector<Option> & get_options();
-    const std::vector<std::string> & get_arguments();
-    const std::string & get_option(const std::string & option_name);
+    const std::vector<std::wstring> & get_arguments();
+    const std::wstring & get_option(const std::wstring & option_name);
 };

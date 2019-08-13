@@ -6,30 +6,34 @@
 #include "arg_parser.h"
 #include "pdf_generator.h"
 
-std::shared_ptr<ArgParser> parse_args(const int, const char **);
+std::shared_ptr<ArgParser> parse_args(const int, const wchar_t **);
 void ensure_minimum_arguments(const std::shared_ptr<ArgParser>);
 void ensure_output_file_provided(const std::shared_ptr<ArgParser>);
 
-int main(int argc, const char ** argv) {
+int wmain(int argc, const wchar_t ** argv)
+{
   std::shared_ptr<ArgParser> parser;
-  try{
+  try
+  {
     parser = parse_args(argc, argv);
-  } catch (const int&) {
+  }
+  catch (const int&)
+  {
     return -1;
   }
 
   PDFGenerator generator;
-  for (const std::string & file: parser->get_arguments()) {
-    generator.add_file(const_cast<std::string&>(file));
+  for (const auto& file: parser->get_arguments()) {
+    generator.add_file(file);
   }
 
-  generator.generate(parser->get_option("output"));
+  generator.generate(parser->get_option(L"output"));
 
   return 0;
 }
 
 
-std::shared_ptr<ArgParser> parse_args(const int argc, const char ** argv) {
+std::shared_ptr<ArgParser> parse_args(const int argc, const wchar_t ** argv) {
   // skip the first argument as its just the application call
   std::shared_ptr<ArgParser> parser(new ArgParser(argc-1, argv+1));
 
@@ -48,7 +52,7 @@ void ensure_minimum_arguments(const std::shared_ptr<ArgParser> parser){
 
 void ensure_output_file_provided(const std::shared_ptr<ArgParser> parser){
   try {
-    parser->get_option("output");
+    parser->get_option(L"output");
   } catch (NoSuchOption&){
     std::cout << "You must provide a -output=[filepath] argument for the output file" << std::endl;
     throw -1;

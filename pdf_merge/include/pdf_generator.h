@@ -13,17 +13,17 @@ class FailedToClosePDFFile : public std::exception {};
 
 class PDFGenerator{
   private:
-    std::vector<std::string*> files;
+	std::vector<std::wstring> files;
     PDFParser reader;
     PDFWriter writer;
 
-    virtual bool file_exists(std::string & path);
+    virtual bool file_exists(const std::wstring& path);
   public:
     static const int ADD_TO_END = -1;
 
     PDFGenerator();
 
-    void generate(const std::string & target_file);
-    void add_file(std::string & path, int position=ADD_TO_END);
-    const std::vector<std::string*> & get_files();
+    void generate(const std::wstring& target_file);
+    void add_file(const std::wstring& path, int position=ADD_TO_END);
+	const std::vector<std::wstring> & get_files();
 };
